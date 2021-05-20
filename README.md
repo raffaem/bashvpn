@@ -23,6 +23,15 @@ This client will also configure your system to use the DNS servers provided by t
 2. iptables-persistent is needed in order to save iptables rules
 `sudo apt-get install iptables-persistent`
 
+3. Additional Packages required for script functionality
+
+    - `network-manager` and `network-manager-openvpn` are both called in the installation script
+    - `psmisc` will install the `killall` command
+
+    ```bash
+    sudo apt-get install network-manager network-manager-openvpn psmisc`
+    ```
+
 # Instructions
 
 1. Rename `config.ini.template` into `config.ini`
