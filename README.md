@@ -1,46 +1,60 @@
-This is a free openvpn client you can run using bash.
+# Introduction
+
+`bashvpn` is a free openvpn client you can run using bash.
 
 So you don't need proprietary clients anymore to run the VPN.
 
 This client will install the VPN using a systemd service so that it starts when you boot your PC.
 
-It will also use `iptables` to setup a "killswitch". iptables will be configured to only allow connections to the VPN server and the VPN DNS servers. All other connections to anything else will be blocked. You can future configure which ports will be opened by tuning on the tunnel interface.
+It will also use `iptables` to setup a "killswitch".
+
+`iptables` will be configured to only allow packets from/to the VPN server and the VPN DNS servers.
+
+All other packets will be dropped.
+
+You can further configure which ports will be opened by tuning on the tunnel interface.
 
 This client will also configure your system to use the DNS servers provided by the VPN provider, in order to avoid DNS leaks.
 
 # Requirements
 
-1. The openvpn official client is suggested. See [here](https://community.openvpn.net/openvpn/wiki/OpenvpnSoftwareRepos) for installation instructions
+1. For Ubuntu users, the openvpn official client is suggested. See [here](https://community.openvpn.net/openvpn/wiki/OpenvpnSoftwareRepos) for installation instructions.
 
-    If you decide to use the openvpn client that comes with Ubuntu instead of the one provided above, notice that this client look for configuration files in `/etc/openvpn` instead of `/etc/openvpn/client`. Thus, to make it work, open `service_install.sh` and change
+    Fedora users are fine with `sudo dnf install openvpn`.
 
-    `/etc/openvpn/client/bashvpn.conf`
+2. iptables-persistent is needed in order to save iptables rules.
 
-    into
+    For Ubuntu users, run `sudo apt-get install iptables-persistent`.
 
-    `/etc/openvpn/bashvpn.conf`
+    For Fedora users, run `sudo dnf install iptables-services`.
 
-2. iptables-persistent is needed in order to save iptables rules
-`sudo apt-get install iptables-persistent`
+3. Additional Packages required for script functionality. We need NetworkManager and the `killall` command.
 
-3. Additional Packages required for script functionality
+    For Ubuntu users, run `sudo apt-get install psmisc`.
 
-    - `network-manager` and `network-manager-openvpn` are both called in the installation script
-    - `psmisc` will install the `killall` command
+    For Debian users, run `sudo apt-get install network-manager network-manager-openvpn psmisc`.
 
-    ```bash
-    sudo apt-get install network-manager network-manager-openvpn psmisc`
-    ```
+    For Fedora users, you should be fine.
 
 # Instructions
 
 1. Rename `config.ini.template` into `config.ini`
 
-2. Open `config.ini` and put inside the DNS servers provided by your VPN provider. It's important you use the DNS servers of your VPN provider and neither the ones you obtain through DHCP nor public ones in order to avoid DNS leaks
+2. Open `config.ini` and modify as follows:
 
-3. Your VPN provider should provide you with .ovpn configuration files to use the VPN through the openvpn client. Download them
+    `DNS1=` put here the first DNS server provided by your VPN provider. Don't use public DNS servers like Google's in order to avoid DNS leaks. Use the DNS server of your VPN provider.
 
-4. To install the service, run `service_install.sh <OVPN FILE>`, substituting `<OVPN FILE>` with the configuration file provided by your VPN
+    `DNS2` second DNS server of your VPN provider.
+
+    `IP4TABLES_FILE` where to save iptables rules. On Fedora this is `/etc/sysconfig/iptables` which is the default. If you are running a different distribution, try looking into `usr/lib/systemd/system/iptables.service`, read the docs of your distro or open an issue in this repository.
+
+    `IP6TABLES_FILE` as above but for IP6. Defaults to `/etc/sysconfig/ip6tables`.
+
+    `OPENVPN_CONF_DIR` where openvpn is looking for configuration files. On Fedora and on Ubuntu running the openvpn client from the official open repositories, this is `/etc/openvpn/client`, which is the default. On Ubuntu running the openvpn client found in the Ubuntu's repositories, not the OpenVPN official repositories, this is `/etc/openvpn`.
+
+3. Your VPN provider should provide you with .ovpn configuration files to use the VPN through the openvpn client. Download them.
+
+4. To install the service, run `service_install.sh [OVPN_FILE]`, substituting `[OVPN_FILE]` with the .ovpn configuration file provided by your VPN.
 
 These steps must be run only once. The VPN tunnel will be enabled as a systemd service and should boot up with your computer.
 
@@ -52,7 +66,7 @@ You should check that everything works
 
 2. Check you are not subject to DNS leaks by running [this test](https://www.dnsleaktest.com/). You can learn about DNS leaks [here](https://proprivacy.com/vpn/guides/dns-leak-protection).
 
-3. Check the killswitch. 
+3. Check the killswitch.
 
     Run
 
@@ -64,7 +78,7 @@ You should check that everything works
     > -P FORWARD DROP
     > -P OUTPUT DROP
 
-    Also run 
+    Also run:
 
     `sudo ip6tables -S | grep DROP`
 
@@ -77,8 +91,11 @@ You should check that everything works
 
 # Process
 
-If you wish to run the VPN as a process, after running steps 1-3 above, use `connect_process.sh <OVPN FILE>`.
+If you wish to run the VPN as a process, after running steps 1-3 above, use `connect_process.sh [OVPN_FILE]`.
 
 # Direct connection
 
-If for some reason you want to disconnect the VPN, run `vpnmode_undo.sh`
+If for some reason you want to disconnect the VPN:
+
+* If you installed as a service, call `service_uninstall.sh`
+* Kill the process if you used `connect_process.sh` (just press CTRL+C)
