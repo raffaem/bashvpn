@@ -16,6 +16,17 @@ You can further configure which ports will be opened by tuning on the tunnel int
 
 This client will also configure your system to use the DNS servers provided by the VPN provider, in order to avoid DNS leaks.
 
+# Compatibility
+
+This should be compatible with any distribution that:
+
+* Uses systemd to manage services
+* AND uses NetworkManager to manage connections
+* AND uses iptables (I'm planning to support nftables too)
+* AND your VPN provider must use the OpenVPN protocol (no plans for WireGuard yet) and provide you with .ovpn configuration files
+
+The first 3 points are abided by the current versions of Ubuntu and Fedora.
+
 # Requirements
 
 1. For Ubuntu users, the openvpn official client is suggested. See [here](https://community.openvpn.net/openvpn/wiki/OpenvpnSoftwareRepos) for installation instructions.
