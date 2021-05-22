@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+echo "[VPNMODE_UNDO] MYDIR=$mydir"
+
 # Take old VPN connection down
 echo "Taking down VPN tunnel...."
 sudo systemctl stop openvpn-client@bashvpn
@@ -22,7 +25,7 @@ sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
 
 # Remove firewall restrictions
 echo "Resetting firewall..."
-source ./iptables_accept_all.sh
+source $mydir/iptables_accept_all.sh
 
 # Bring connection back up
 echo "Taking up connection..."

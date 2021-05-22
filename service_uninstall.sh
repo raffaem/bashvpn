@@ -8,7 +8,7 @@ sudo killall openvpn
 sudo rm /etc/openvpn/client/bashvpn.conf
 
 # Undo VPN mode
-source ./vpnmode_undo.sh
+source ./internals/vpnmode_undo.sh
 
 echo "The OpenVPN service has been uninstalled"
 

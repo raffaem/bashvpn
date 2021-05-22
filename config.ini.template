@@ -1,4 +1,5 @@
 DNS1=
 DNS2=
-IPTABLES_PERSISTENT_FILE=/etc/sysconfig/iptables
+IP4TABLES_FILE=/etc/sysconfig/iptables
+IP6TABLES_FILE=/etc/sysconfig/ip6tables
 OPENVPN_CONF_DIR=/etc/openvpn/client

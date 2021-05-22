@@ -66,6 +66,9 @@ sudo ip6tables -P FORWARD DROP
 sudo ip6tables -P OUTPUT DROP
 
 # Make rules persistent (require iptables-persistent to be installed)
-openvpn_conf_dir=`grep -Po "(?<=IPTABLES_PERSISTENT_FILE=).*" config.ini`
-sudo iptables-save | sudo tee /etc/iptables/rules.v4 > /dev/null
-sudo ip6tables-save | sudo tee /etc/iptables/rules.v6 > /dev/null
+ip4tables_file=`grep -Po "(?<=IP4TABLES_FILE=).*" config.ini`
+echo "[DEBUG] [KILLSWITCH] ip4tables_file=$ip4tables_file"
+ip6tables_file=`grep -Po "(?<=IP6TABLES_FILE=).*" config.ini`
+echo "[DEBUG] [KILLSWITCH] ip6tables_file=$ip6tables_file"
+sudo iptables-save | sudo tee $ip4tables_file > /dev/null
+sudo ip6tables-save | sudo tee $ip6tables_file > /dev/null
