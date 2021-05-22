@@ -10,10 +10,6 @@ if ! [ -f $1 ]; then
 	exit 1
 fi
 
-# Stop the service in case it is running
-sudo systemctl stop openvpn-client@bashvpn
-sudo killall openvpn
-
 # Set up DNS servers and killswitch
 source ./internals/vpnmode_do.sh
 
