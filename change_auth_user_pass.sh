@@ -10,6 +10,7 @@
 # This saves sensible credentials into a file. Use with caution!
 # It is useful when you want to start the service at boot 
 # without asking for credentials each time
+# WARNING: The credentials file cannot be in your home folder or it won't work
 # Call it like:
 # change_auth_user_pass.sh [DIRECTORY_WITH_OVPN_FILES] [CREDENTIALS_FILE]
 
