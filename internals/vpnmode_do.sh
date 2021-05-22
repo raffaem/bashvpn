@@ -11,7 +11,6 @@ if ! [ -f $1 ]; then
 fi
 
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-echo "[VPNMODE_DO] MYDIR=$mydir"
 
 # Take old VPN connection down
 echo "Taking down VPN tunnel...."

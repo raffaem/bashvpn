@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-echo "[VPNMODE_UNDO] MYDIR=$mydir"
 
 # Take old VPN connection down
 echo "Taking down VPN tunnel...."
