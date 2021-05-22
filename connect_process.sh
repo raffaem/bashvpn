@@ -11,7 +11,10 @@ if ! [ -f $1 ]; then
 fi
 
 # Restore "VPN mode"
-source ./vpnmode_do.sh $1
+source ./internals/vpnmode_do.sh $1
+
+# Wait for connection to be restored
+sleep 5
 
 # Connect to the VPN
 sudo openvpn $1

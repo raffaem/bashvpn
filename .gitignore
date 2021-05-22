@@ -1,2 +1,4 @@
+service_install_fast.sh
 config.ini
 ovpn
+ovpn_test

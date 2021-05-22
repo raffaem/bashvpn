@@ -15,12 +15,11 @@ sudo systemctl stop openvpn-client@bashvpn
 sudo killall openvpn
 
 # Set up DNS servers and killswitch
-source ./vpnmode_do.sh
+source ./internals/vpnmode_do.sh
 
 # Copy the .ovpn configuration file to OpenVPN folder
-# This is /etc/openvpn/client for openvpn PPA repository
-# It's just /etc/openvpn for the openvpn client of native Ubuntu
-sudo cp $1 /etc/openvpn/client/bashvpn.conf
+openvpn_conf_dir=`grep -Po "(?<=OPENVPN_CONF_DIR=).*" config.ini`
+sudo cp $1 $openvpn_conf_dir/bashvpn.conf
 
 # Enable the service
 sudo systemctl enable openvpn-client@bashvpn
